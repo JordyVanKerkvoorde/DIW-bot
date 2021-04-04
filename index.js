@@ -8,6 +8,8 @@ const { cpuUsage } = require('process');
 client.commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const { dataSeeder } = require('./data.seeder');
+const { dataService } = require('./services/data.service');
 
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
@@ -71,28 +73,41 @@ client.on('message', message => {
     }
 });
 
+client.login(process.env.TOKEN);
+
 let newestVideoID = '';
 
-function checkNewestVideo(){
-                console.log(newestVideoID)
-    axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${process.env.DIWUPLOADSID}&key=${process.env.YTTOKEN}&part=snippet&maxResults=50`)
-        .then(response => {
-            const video = response.data.items[0];
-            const newestID = video.snippet.resourceId.videoId;
-            if(newestVideoID !== newestID){
-                newestVideoID = newestID;
-                const URL = `https://www.youtube.com/watch?v=${newestID}`;
-                const channel = client.channels.cache.find(channel => channel.name === 'diw');
-                channel.send('A NEW DIW VIDEO RELEASED!')
-                channel.send(URL);
-            }
-        });
+async function checkNewestVideo(){
+    try{
+        const newVideos = await dataService.checkLatest();
+        client.guilds.cache.forEach(guild => {
+            newVideos.forEach(video => {
+                const channel = guild.channels.cache.find(channel => channel.name === 'diw');
+                try{
+                    channel.send('De Ideale Wereld werd net iets idealer:');
+                    const URL = `https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`;
+                    channel.send(URL);
+                } catch(err) {
+                    console.log('Message couldnt be sent for guild: ' + guild.name)
+                }
+            })
+        })
+
+
+    } catch(err){
+        console.log(err)
+    }
 }
+
+async function getData(){
+    await dataSeeder.initializeData();
+}
+
+getData();
 
 checkNewestVideo();
 setInterval(function() {
     checkNewestVideo();
-}, 600000);
+}, 10000);
+// 600000
 
-
-client.login(process.env.TOKEN);

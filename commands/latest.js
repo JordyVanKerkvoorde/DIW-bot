@@ -1,5 +1,4 @@
-const { prefix } = require('../config.json');
-const axios = require('axios');
+const { dataService } = require('../services/data.service')
 
 module.exports = {
 	name: 'latest',
@@ -8,11 +7,8 @@ module.exports = {
 	usage: '',
 	cooldown: 30,
 	execute(message, args) {
-        axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${process.env.DIWUPLOADSID}&key=${process.env.YTTOKEN}&part=snippet&maxResults=50`)
-            .then(response => {
-                const video = response.data.items[0];
-                const URL = `https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`;
-                message.channel.send(URL);
-            });
+		const video = dataService.getLatest();
+        const URL = `https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`;
+		message.channel.send(URL);
 	},
 };
