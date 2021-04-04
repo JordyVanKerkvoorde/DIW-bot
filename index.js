@@ -108,6 +108,6 @@ getData();
 checkNewestVideo();
 setInterval(function() {
     checkNewestVideo();
-}, 10000);
+}, 600000);
 // 600000
 
