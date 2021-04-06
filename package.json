@@ -4,7 +4,9 @@
   "description": "Discord bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "pmstart": "pm2 start index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,7 @@
     "axios": "^0.21.1",
     "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
-    "eslint": "^7.23.0"
+    "eslint": "^7.23.0",
+    "pm2": "^4.5.6"
   }
 }
