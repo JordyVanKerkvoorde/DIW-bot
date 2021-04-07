@@ -83,8 +83,9 @@ async function checkNewestVideo(){
         client.guilds.cache.forEach(guild => {
             newVideos.forEach(video => {
                 const channel = guild.channels.cache.find(channel => channel.name === 'diw');
+                const role = guild.roles.cache.find(role => role.name === "diw");
                 try{
-                    channel.send('De Ideale Wereld werd net iets idealer:');
+                    channel.send(`<@&${role.id}>De Ideale Wereld werd net iets idealer:`);
                     const URL = `https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`;
                     channel.send(URL);
                 } catch(err) {
@@ -109,5 +110,5 @@ checkNewestVideo();
 setInterval(function() {
     checkNewestVideo();
 }, 600000);
-// 600000
+// 600000 = 10min
 
