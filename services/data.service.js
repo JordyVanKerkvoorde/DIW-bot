@@ -48,6 +48,20 @@ class DataService {
 
         return newVideos;
     }
+
+    getVideoBySearch(searchtext){
+        const data = JSON.parse(fs.readFileSync('./data.json'));
+        let results = [];
+
+        data.videos.forEach(video => {
+            const [title, description] = [video.snippet.title.toLowerCase(), video.snippet.description.toLowerCase()];
+
+            if(title.includes(searchtext.toLowerCase()) || description.includes(searchtext.toLowerCase())) results.push(video);
+        });
+
+
+        return results;
+    }
 }
 
 

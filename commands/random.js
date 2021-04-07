@@ -1,4 +1,4 @@
-const { dataService } = require('../services/data.service')
+const { dataService } = require('../services/data.service');
 
 module.exports = {
 	name: 'random',
