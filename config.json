@@ -1,4 +1,11 @@
 {
-    "prefix": "$",
-    "ghostPrefix": "€"
+    "prefixes": {
+        "prod": "$",
+        "ghost": "€"
+    },
+    "flags": {
+        "prod": ["--production", "--prod"],
+        "dev": ["--development", "--dev"],
+        "test": ["--test"]
+    }
 }

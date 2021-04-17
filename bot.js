@@ -11,10 +11,25 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const { dataSeeder } = require('./data.seeder');
 const { dataService } = require('./services/data.service');
 
-export default class Client {
-    constructor(prefix, token){
+class Bot {
+    constructor(prefix, token, initalizeData){
         this._prefix = prefix;
         this._token = token;
+        this._initialize = initalizeData;
+    }
+
+    async start(){
+        this.setUpCommands();
+        this.setUpClient();
+        this.login();
+        if(this._initialize) await dataSeeder.initializeData();
+
+        Bot.checkNewestVideo();
+
+        setInterval(function() {
+            Bot.checkNewestVideo();
+        }, 600000);
+        // 600000 = 10 min
     }
 
     setUpCommands(){
@@ -87,7 +102,7 @@ export default class Client {
         client.login(this._token);
     }
 
-    async checkNewestVideo(){
+    static async checkNewestVideo(){
         try{
             const newVideos = await dataService.checkLatest();
             client.guilds.cache.forEach(guild => {
@@ -110,3 +125,5 @@ export default class Client {
         }
     }
 }
+
+module.exports = Bot;
