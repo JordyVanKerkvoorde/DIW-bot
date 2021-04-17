@@ -8,8 +8,7 @@ class DataSeeder {
             videos: []
         }
         fs.writeFileSync('./data.json', JSON.stringify(dataObject, null, 4));
-        this.playlist = JSON.parse(fs.readFileSync('./data.json'))
-        //console.log(this.playlist)
+        this.playlist = JSON.parse(fs.readFileSync('./data.json'));
     }
 
     async initializeData() {
@@ -21,7 +20,7 @@ class DataSeeder {
             looping = data.nextPageToken ? true : false;
             if(data.nextPageToken) data = await youtubeService.fetchPlaylistData(data.nextPageToken);
         }
-        console.log(this.playlist.videos.length);
+        console.log(`Videos found: ${this.playlist.videos.length}`);
         fs.writeFileSync('./data.json', JSON.stringify(this.playlist, null, 4));
 
     }

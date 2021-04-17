@@ -25,8 +25,8 @@ client.once('ready', () => {
 });
 
 client.on('message', message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    if (!message.content.startsWith(ghostPrefix) || message.author.bot) return;
+    const args = message.content.slice(ghostPrefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -73,7 +73,7 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.TOKEN);
+client.login(process.env.GHOSTTOKEN);
 
 let newestVideoID = '';
 
@@ -103,12 +103,12 @@ async function checkNewestVideo(){
 async function getData(){
     await dataSeeder.initializeData();
 }
+console.log(process.argv.slice(2))
 
-getData();
+// getData();
 
 checkNewestVideo();
 setInterval(function() {
     checkNewestVideo();
 }, 600000);
 // 600000 = 10min
-

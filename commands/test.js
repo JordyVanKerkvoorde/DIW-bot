@@ -9,7 +9,6 @@ module.exports = {
 	cooldown: 1,
 	async execute(message, args) {
         let newVids = await dataService.checkLatest();
-        console.log(newVids)
         message.channel.send('These videos are not in the datalist: ');
         newVids.forEach(video => {
             const URL = `https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`;
