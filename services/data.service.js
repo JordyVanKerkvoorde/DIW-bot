@@ -39,9 +39,11 @@ class DataService {
         let data = JSON.parse(fs.readFileSync('./data.json'));
         const playlist = data.videos.slice(0, 50);
         let newVideos = [];
-        newestData.items.forEach((item, index) => {
+        
+        for(const item of newestData.items){
             if(!(playlist.find(video => video.id === item.id))) newVideos.push(item);
-        });
+            else break
+        }
 
         data.videos = [...newVideos, ...data.videos];
         fs.writeFileSync('./data.json', JSON.stringify(data, null, 4));
